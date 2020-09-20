@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loan_tracking/screens/closed_loans_screen.dart';
+import 'package:loan_tracking/screens/open_loans_screen.dart';
 import 'package:loan_tracking/utils/custom_colors.dart';
-import 'package:loan_tracking/widgets/divider_menu_bar.dart';
-import 'package:loan_tracking/widgets/loan_card.dart';
+import 'package:loan_tracking/widgets/loan_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -37,80 +39,46 @@ class HomeScreen extends StatelessWidget {
                       fontSize: 24,
                     ),
                   ),
+                  SizedBox(
+                    height: 29,
+                  ),
                 ],
               ),
             ),
             // Open loans
-            Container(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 29,
+            LoanList(
+              title: "Open loans",
+              heroTag: "OpenLoans",
+              icon: Icons.arrow_forward_ios,
+              action: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return OpenLoansScreen();
+                    },
                   ),
-                  DividerMenuBar(
-                    title: "Open loans",
-                    onPressed: () {},
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 18,
-                      ),
-                      LoanCard(
-                        name: "Jonathan",
-                        subject: "Food",
-                        amount: 14.5,
-                      ),
-                      LoanCard(
-                        name: "Jonathan",
-                        subject: "Food",
-                        amount: 14.5,
-                      ),
-                      LoanCard(
-                        name: "Jonathan",
-                        subject: "Food",
-                        amount: 14.5,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                );
+              },
+            ),
+            SizedBox(
+              height: 29,
             ),
             // Closed loans
-            Container(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 29,
+            LoanList(
+              title: "Closed loans",
+              heroTag: "ClosedLoans",
+              icon: Icons.arrow_forward_ios,
+              action: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) {
+                      return ClosedLoansScreen();
+                    },
                   ),
-                  DividerMenuBar(
-                    title: "Closed loans",
-                    onPressed: () {},
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 18,
-                      ),
-                      LoanCard(
-                        name: "Jonathan",
-                        subject: "Food",
-                        amount: 14.5,
-                      ),
-                      LoanCard(
-                        name: "Jonathan",
-                        subject: "Food",
-                        amount: 14.5,
-                      ),
-                      LoanCard(
-                        name: "Jonathan",
-                        subject: "Food",
-                        amount: 14.5,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),
