@@ -8,17 +8,18 @@ class LoanList extends StatelessWidget {
     @required this.icon,
     @required this.action,
     @required this.heroTag,
+    @required this.loanCards,
   });
 
   final String title;
   final IconData icon;
   final Function action;
   final String heroTag;
+  final List<Widget> loanCards;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       child: Column(
         children: [
           Hero(
@@ -29,28 +30,13 @@ class LoanList extends StatelessWidget {
               onPressed: action,
             ),
           ),
-          Column(
-            children: [
-              SizedBox(
-                height: 18,
-              ),
-              LoanCard(
-                name: "Jonathan",
-                subject: "Food",
-                amount: 14.5,
-              ),
-              LoanCard(
-                name: "Jonathan",
-                subject: "Food",
-                amount: 14.5,
-              ),
-              LoanCard(
-                name: "Jonathan",
-                subject: "Food",
-                amount: 14.5,
-              ),
-            ],
-          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return loanCards[index];
+            },
+          )
         ],
       ),
     );

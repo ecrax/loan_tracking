@@ -6,22 +6,26 @@ class LoanCard extends StatelessWidget {
     this.name,
     this.subject,
     this.amount,
+    this.isLast = false,
   });
 
   final String name;
   final String subject;
   final double amount;
+  final bool isLast;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xFFE5E5E5),
-            width: 1,
-          ),
-        ),
+        border: !isLast
+            ? Border(
+                bottom: BorderSide(
+                  color: Color(0xFFE5E5E5),
+                  width: 1,
+                ),
+              )
+            : null,
       ),
       margin: const EdgeInsets.symmetric(
         horizontal: 39,

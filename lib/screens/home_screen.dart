@@ -1,20 +1,63 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loan_tracking/screens/add_loan_screen.dart';
 import 'package:loan_tracking/screens/closed_loans_screen.dart';
 import 'package:loan_tracking/screens/open_loans_screen.dart';
 import 'package:loan_tracking/utils/custom_colors.dart';
+import 'package:loan_tracking/widgets/loan_card.dart';
 import 'package:loan_tracking/widgets/loan_list.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Widget> loanCards = List<LoanCard>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    loanCards = [
+      LoanCard(
+        name: "Jonathan",
+        subject: "Food",
+        amount: 14.5,
+      ),
+      LoanCard(
+        name: "Jonathan",
+        subject: "Food",
+        amount: 14.5,
+      ),
+      LoanCard(
+        name: "Jonathan",
+        subject: "Food",
+        amount: 14.5,
+        isLast: true,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.add),
+        label: Text("Add"),
         backgroundColor: accentColor,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return AddLoanScreen();
+              },
+            ),
+          );
+        },
       ),
       body: SafeArea(
         child: Column(
@@ -49,13 +92,16 @@ class HomeScreen extends StatelessWidget {
             LoanList(
               title: "Open loans",
               heroTag: "OpenLoans",
+              loanCards: loanCards,
               icon: Icons.arrow_forward_ios,
               action: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return OpenLoansScreen();
+                      return OpenLoansScreen(
+                        loanCards: loanCards,
+                      );
                     },
                   ),
                 );
@@ -68,13 +114,16 @@ class HomeScreen extends StatelessWidget {
             LoanList(
               title: "Closed loans",
               heroTag: "ClosedLoans",
+              loanCards: loanCards,
               icon: Icons.arrow_forward_ios,
               action: () {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
                     builder: (context) {
-                      return ClosedLoansScreen();
+                      return ClosedLoansScreen(
+                        loanCards: loanCards,
+                      );
                     },
                   ),
                 );
