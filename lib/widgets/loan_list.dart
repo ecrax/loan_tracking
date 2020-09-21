@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loan_tracking/utils/loan.dart';
 import 'package:loan_tracking/widgets/divider_menu_bar.dart';
 import 'package:loan_tracking/widgets/loan_card.dart';
 
@@ -8,14 +9,14 @@ class LoanList extends StatelessWidget {
     @required this.icon,
     @required this.action,
     @required this.heroTag,
-    @required this.loanCards,
+    @required this.loans,
   });
 
   final String title;
   final IconData icon;
   final Function action;
   final String heroTag;
-  final List<Widget> loanCards;
+  final List<Loan> loans;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,12 @@ class LoanList extends StatelessWidget {
             shrinkWrap: true,
             itemCount: 3,
             itemBuilder: (context, index) {
-              return loanCards[index];
+              return LoanCard(
+                name: loans[index].name,
+                subject: loans[index].subject,
+                amount: loans[index].amount,
+                isLast: index == 2,
+              );
             },
           )
         ],

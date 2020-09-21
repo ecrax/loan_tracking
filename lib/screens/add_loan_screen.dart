@@ -39,7 +39,7 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
           children: [
             DividerMenuBar(
               title: "Add loan",
-              icon: Icons.arrow_back_ios,
+              icon: Icons.keyboard_arrow_down,
               onPressed: () {
                 Navigator.pop(context);
               },

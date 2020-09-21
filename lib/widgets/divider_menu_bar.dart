@@ -32,7 +32,7 @@ class DividerMenuBar extends StatelessWidget {
             ),
             Icon(
               icon,
-              size: 14,
+              size: 24,
               color: accentColor,
             )
           ],

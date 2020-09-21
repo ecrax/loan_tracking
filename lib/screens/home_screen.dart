@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loan_tracking/screens/add_loan_screen.dart';
 import 'package:loan_tracking/screens/closed_loans_screen.dart';
 import 'package:loan_tracking/screens/open_loans_screen.dart';
 import 'package:loan_tracking/utils/custom_colors.dart';
-import 'package:loan_tracking/widgets/loan_card.dart';
+import 'package:loan_tracking/utils/loan.dart';
 import 'package:loan_tracking/widgets/loan_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,28 +14,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Widget> loanCards = List<LoanCard>();
+  List<Loan> loans = List<Loan>();
 
   @override
   void initState() {
     super.initState();
 
-    loanCards = [
-      LoanCard(
+    loans = [
+      Loan(
         name: "Jonathan",
         subject: "Food",
         amount: 14.5,
       ),
-      LoanCard(
+      Loan(
         name: "Jonathan",
         subject: "Food",
         amount: 14.5,
       ),
-      LoanCard(
+      Loan(
         name: "Jonathan",
         subject: "Food",
         amount: 14.5,
-        isLast: true,
       ),
     ];
   }
@@ -59,77 +57,79 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 29),
-              child: Column(
-                children: [
-                  Text(
-                    "Loaned money",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: lightGrey,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 29),
+                child: Column(
+                  children: [
+                    Text(
+                      "Loaned money",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: lightGrey,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "\$ 5023",
-                    style: TextStyle(
-                      fontSize: 24,
+                    SizedBox(
+                      height: 8,
                     ),
-                  ),
-                  SizedBox(
-                    height: 29,
-                  ),
-                ],
+                    Text(
+                      "\$ 5023",
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 29,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // Open loans
-            LoanList(
-              title: "Open loans",
-              heroTag: "OpenLoans",
-              loanCards: loanCards,
-              icon: Icons.arrow_forward_ios,
-              action: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return OpenLoansScreen(
-                        loanCards: loanCards,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-            SizedBox(
-              height: 29,
-            ),
-            // Closed loans
-            LoanList(
-              title: "Closed loans",
-              heroTag: "ClosedLoans",
-              loanCards: loanCards,
-              icon: Icons.arrow_forward_ios,
-              action: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) {
-                      return ClosedLoansScreen(
-                        loanCards: loanCards,
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ],
+              // Open loans
+              LoanList(
+                title: "Open loans",
+                heroTag: "OpenLoans",
+                loans: loans,
+                icon: Icons.keyboard_arrow_right,
+                action: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return OpenLoansScreen(
+                          loans: loans,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              SizedBox(
+                height: 29,
+              ),
+              // Closed loans
+              LoanList(
+                title: "Closed loans",
+                heroTag: "ClosedLoans",
+                loans: loans,
+                icon: Icons.keyboard_arrow_right,
+                action: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ClosedLoansScreen(
+                          loans: loans,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

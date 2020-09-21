@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:loan_tracking/utils/custom_colors.dart';
-import 'package:loan_tracking/widgets/loan_card.dart';
+import 'package:loan_tracking/utils/loan.dart';
 import 'package:loan_tracking/widgets/loan_list.dart';
 
 class OpenLoansScreen extends StatelessWidget {
-  const OpenLoansScreen({this.loanCards});
+  const OpenLoansScreen({this.loans});
 
-  final List<Widget> loanCards;
+  final List<Loan> loans;
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +14,8 @@ class OpenLoansScreen extends StatelessWidget {
         child: LoanList(
           title: "Open loans",
           heroTag: "OpenLoans",
-          loanCards: loanCards,
-          icon: Icons.arrow_back_ios,
+          loans: loans,
+          icon: Icons.keyboard_arrow_down,
           action: () {
             Navigator.pop(context);
           },
