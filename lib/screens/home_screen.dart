@@ -14,29 +14,63 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Loan> loans = List<Loan>();
+  List<Loan> openLoans = List<Loan>();
+  List<Loan> closedLoans = List<Loan>();
 
   @override
   void initState() {
     super.initState();
 
-    loans = [
+    openLoans = [
       Loan(
         name: "Jonathan",
         subject: "Food",
         amount: 14.5,
+        isCompleted: false,
       ),
       Loan(
         name: "Jonathan",
         subject: "Food",
         amount: 14.5,
+        isCompleted: false,
       ),
       Loan(
         name: "Jonathan",
         subject: "Food",
         amount: 14.5,
+        isCompleted: false,
       ),
     ];
+
+    closedLoans = [
+      Loan(
+        name: "Leo",
+        subject: "Food",
+        amount: 14.5,
+        isCompleted: true,
+      ),
+      Loan(
+        name: "Leo",
+        subject: "Food",
+        amount: 14.5,
+        isCompleted: true,
+      ),
+      Loan(
+        name: "Leo",
+        subject: "Food",
+        amount: 14.5,
+        isCompleted: true,
+      ),
+    ];
+  }
+
+  double getAmountSum(List<Loan> loans) {
+    double sum = 0;
+
+    for (var loan in loans) {
+      sum += loan.amount;
+    }
+    return sum;
   }
 
   @override
@@ -76,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 8,
                     ),
                     Text(
-                      "\$ 5023",
+                      "\$ ${getAmountSum(openLoans).toStringAsFixed(2)}",
                       style: TextStyle(
                         fontSize: 24,
                       ),
@@ -91,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
               LoanList(
                 title: "Open loans",
                 heroTag: "OpenLoans",
-                loans: loans,
+                loans: openLoans,
                 icon: Icons.keyboard_arrow_right,
                 action: () {
                   Navigator.push(
@@ -99,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(
                       builder: (context) {
                         return OpenLoansScreen(
-                          loans: loans,
+                          loans: openLoans,
                         );
                       },
                     ),
@@ -113,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               LoanList(
                 title: "Closed loans",
                 heroTag: "ClosedLoans",
-                loans: loans,
+                loans: closedLoans,
                 icon: Icons.keyboard_arrow_right,
                 action: () {
                   Navigator.push(
@@ -121,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(
                       builder: (context) {
                         return ClosedLoansScreen(
-                          loans: loans,
+                          loans: closedLoans,
                         );
                       },
                     ),

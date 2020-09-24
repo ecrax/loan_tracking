@@ -1,7 +1,8 @@
 class Loan {
-  String name;
-  String subject;
-  double amount;
+  final String name;
+  final String subject;
+  final double amount;
+  bool isCompleted;
 
-  Loan({this.name, this.subject, this.amount});
+  Loan({this.name, this.subject, this.amount, this.isCompleted});
 }
