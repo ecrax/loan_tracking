@@ -26,32 +26,34 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    print(auth.currentUser.uid);
+    //getData();
 
-    FirebaseFirestore.instance
+    print(auth.currentUser.uid);
+  }
+
+  void getData() async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
         .collection('loans')
         .doc(auth.currentUser.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      //print(documentSnapshot.data()["loan1"]["subject"]);
-      for (var i = 0; i < documentSnapshot.data().length; i++) {
-        if (documentSnapshot.data()["loan$i"]["isCompleted"]) {
-          openLoans.add(Loan(
-            name: documentSnapshot.data()["name"],
-            subject: documentSnapshot.data()["food"],
-            amount: documentSnapshot.data()["amount"],
-            isCompleted: true,
-          ));
-        } else {
-          closedLoans.add(Loan(
-            name: documentSnapshot.data()["name"],
-            subject: documentSnapshot.data()["food"],
-            amount: documentSnapshot.data()["amount"],
-            isCompleted: false,
-          ));
-        }
+        .get();
+
+    for (var i = 0; i < documentSnapshot.data().length; i++) {
+      if (documentSnapshot.data()["loan$i"]["isCompleted"]) {
+        openLoans.add(Loan(
+          name: documentSnapshot.data()["name"],
+          subject: documentSnapshot.data()["food"],
+          amount: documentSnapshot.data()["amount"],
+          isCompleted: true,
+        ));
+      } else {
+        closedLoans.add(Loan(
+          name: documentSnapshot.data()["name"],
+          subject: documentSnapshot.data()["food"],
+          amount: documentSnapshot.data()["amount"],
+          isCompleted: false,
+        ));
       }
-    });
+    }
   }
 
   double getAmountSum(List<Loan> loans) {
