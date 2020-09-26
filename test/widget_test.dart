@@ -8,8 +8,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:loan_tracking/main.dart';
+import 'package:loan_tracking/utils/loan.dart';
+import 'package:loan_tracking/widgets/loan_list.dart';
 
 void main() {
-  print("test");
+  testWidgets('Loan list test', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Column(
+            children: [
+              LoanList(
+                title: "Closed loans",
+                heroTag: "ClosedLoans",
+                loans: [
+                  Loan(
+                    name: "name",
+                    subject: "subject",
+                    amount: 14.54,
+                    isCompleted: true,
+                  ),
+                ],
+                icon: Icons.keyboard_arrow_right,
+                action: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final nameFinder = find.text('name');
+    final subjectFinder = find.text('subject');
+
+    expect(nameFinder, findsWidgets);
+    expect(subjectFinder, findsWidgets);
+  });
 }
