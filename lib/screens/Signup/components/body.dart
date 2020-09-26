@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:loan_tracking/Screens/Login/login_screen.dart';
-import 'package:loan_tracking/Screens/Signup/components/background.dart';
+import 'package:loan_tracking/screens/Login/login_screen.dart';
+import 'package:loan_tracking/screens/Signup/components/background.dart';
 import 'package:loan_tracking/screens/home_screen.dart';
 import 'package:loan_tracking/widgets/already_have_an_account_acheck.dart';
 import 'package:loan_tracking/widgets/rounded_button.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loan_tracking/Screens/Login/login_screen.dart';
-import 'package:loan_tracking/Screens/Signup/signup_screen.dart';
-import 'package:loan_tracking/Screens/Welcome/components/background.dart';
+import 'package:loan_tracking/screens/Login/login_screen.dart';
+import 'package:loan_tracking/screens/Signup/signup_screen.dart';
+import 'package:loan_tracking/screens/Welcome/components/background.dart';
 import 'package:loan_tracking/widgets/rounded_button.dart';
 import 'package:loan_tracking/utils/custom_colors.dart';
 import 'package:flutter_svg/svg.dart';
