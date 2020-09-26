@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loan_tracking/Screens/Login/login_screen.dart';
 import 'package:loan_tracking/Screens/Signup/components/background.dart';
@@ -54,6 +55,10 @@ class _BodyState extends State<Body> {
                       .createUserWithEmailAndPassword(
                           email: email, password: password);
 
+                  if (kIsWeb) {
+                    await FirebaseAuth.instance
+                        .setPersistence(Persistence.LOCAL);
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loan_tracking/screens/add_loan_screen.dart';
 import 'package:loan_tracking/screens/closed_loans_screen.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   List<Loan> openLoans = List<Loan>();
   List<Loan> closedLoans = List<Loan>();
@@ -24,49 +26,32 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    // print(auth.currentUser.uid);
+    print(auth.currentUser.uid);
 
-    openLoans = [
-      Loan(
-        name: "Jonathan",
-        subject: "Food",
-        amount: 14.5,
-        isCompleted: false,
-      ),
-      Loan(
-        name: "Jonathan",
-        subject: "Food",
-        amount: 14.5,
-        isCompleted: false,
-      ),
-      Loan(
-        name: "Jonathan",
-        subject: "Food",
-        amount: 14.5,
-        isCompleted: false,
-      ),
-    ];
-
-    closedLoans = [
-      Loan(
-        name: "Leo",
-        subject: "Food",
-        amount: 14.5,
-        isCompleted: true,
-      ),
-      Loan(
-        name: "Leo",
-        subject: "Food",
-        amount: 14.5,
-        isCompleted: true,
-      ),
-      Loan(
-        name: "Leo",
-        subject: "Food",
-        amount: 14.5,
-        isCompleted: true,
-      ),
-    ];
+    FirebaseFirestore.instance
+        .collection('loans')
+        .doc(auth.currentUser.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      //print(documentSnapshot.data()["loan1"]["subject"]);
+      for (var i = 0; i < documentSnapshot.data().length; i++) {
+        if (documentSnapshot.data()["loan$i"]["isCompleted"]) {
+          openLoans.add(Loan(
+            name: documentSnapshot.data()["name"],
+            subject: documentSnapshot.data()["food"],
+            amount: documentSnapshot.data()["amount"],
+            isCompleted: true,
+          ));
+        } else {
+          closedLoans.add(Loan(
+            name: documentSnapshot.data()["name"],
+            subject: documentSnapshot.data()["food"],
+            amount: documentSnapshot.data()["amount"],
+            isCompleted: false,
+          ));
+        }
+      }
+    });
   }
 
   double getAmountSum(List<Loan> loans) {
