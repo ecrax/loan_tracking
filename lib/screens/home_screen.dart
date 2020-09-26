@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loan_tracking/screens/add_loan_screen.dart';
 import 'package:loan_tracking/screens/closed_loans_screen.dart';
@@ -14,12 +15,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   List<Loan> openLoans = List<Loan>();
   List<Loan> closedLoans = List<Loan>();
 
   @override
   void initState() {
     super.initState();
+
+    // print(auth.currentUser.uid);
 
     openLoans = [
       Loan(
