@@ -1,5 +1,7 @@
 # loan_tracking
 
+![Test, Build and Release apk](https://github.com/ecrax/loan_tracking/workflows/Test,%20Build%20and%20Release%20apk/badge.svg)
+
 A new Flutter project.
 
 ## Getting Started
