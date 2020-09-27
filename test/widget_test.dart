@@ -30,7 +30,7 @@ void main() {
                   ),
                 ],
                 icon: Icons.keyboard_arrow_right,
-                action: () {},
+                onDissmissed: (index, loan) {},
               ),
             ],
           ),
@@ -40,8 +40,10 @@ void main() {
 
     final nameFinder = find.text('name');
     final subjectFinder = find.text('subject');
+    final loansFinder = find.text('Closed loans');
 
     expect(nameFinder, findsWidgets);
     expect(subjectFinder, findsWidgets);
+    expect(loansFinder, findsWidgets);
   });
 }

@@ -5,7 +5,7 @@ class DividerMenuBar extends StatelessWidget {
   const DividerMenuBar({
     @required this.title,
     @required this.icon,
-    @required this.onPressed,
+    this.onPressed,
   });
 
   final String title;

@@ -4,42 +4,38 @@ import 'package:loan_tracking/utils/loan.dart';
 import 'package:loan_tracking/widgets/divider_menu_bar.dart';
 import 'package:loan_tracking/widgets/loan_card.dart';
 
-class LoanList extends StatefulWidget {
+class LoanList extends StatelessWidget {
   const LoanList({
     @required this.title,
     @required this.icon,
-    @required this.action,
     @required this.heroTag,
     @required this.loans,
+    @required this.onDissmissed,
   });
 
   final String title;
   final IconData icon;
-  final Function action;
+
   final String heroTag;
   final List<Loan> loans;
+  final Function(int, Loan) onDissmissed;
 
-  @override
-  _LoanListState createState() => _LoanListState();
-}
-
-class _LoanListState extends State<LoanList> {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
           Hero(
-            tag: widget.heroTag,
+            tag: heroTag,
             child: DividerMenuBar(
-              title: widget.title,
-              icon: widget.icon,
-              onPressed: widget.action,
+              title: title,
+              icon: icon,
             ),
           ),
           ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: widget.loans.length,
+            itemCount: loans.length,
             itemBuilder: (context, index) {
               return Dismissible(
                 key: UniqueKey(),
@@ -47,22 +43,13 @@ class _LoanListState extends State<LoanList> {
                   color: accentColor,
                 ),
                 child: LoanCard(
-                  name: widget.loans[index].name,
-                  subject: widget.loans[index].subject,
-                  amount: widget.loans[index].amount,
-                  isLast: index == widget.loans.length - 1,
+                  name: loans[index].name,
+                  subject: loans[index].subject,
+                  amount: loans[index].amount,
+                  isLast: index == loans.length - 1,
                 ),
                 onDismissed: (direction) {
-                  setState(() {
-                    // Mark loan as closed
-                    widget.loans.removeAt(index);
-                  });
-
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Marked as closed"),
-                    ),
-                  );
+                  onDissmissed(index, loans[index]);
                 },
               );
             },

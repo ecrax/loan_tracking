@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loan_tracking/screens/add_loan_screen.dart';
-import 'package:loan_tracking/screens/closed_loans_screen.dart';
-import 'package:loan_tracking/screens/open_loans_screen.dart';
 import 'package:loan_tracking/utils/custom_colors.dart';
 import 'package:loan_tracking/utils/loan.dart';
 import 'package:loan_tracking/widgets/loan_list.dart';
@@ -19,6 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  Future<DocumentSnapshot> futureLoans;
+
   List<Loan> openLoans = List<Loan>();
   List<Loan> closedLoans = List<Loan>();
 
@@ -26,30 +26,35 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    //getData();
+    getData();
+    fillLists();
 
     print(auth.currentUser.uid);
   }
 
-  void getData() async {
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection('loans')
-        .doc(auth.currentUser.uid)
-        .get();
+  Future getData() async {
+    setState(() {
+      futureLoans =
+          firestore.collection("loans").doc(auth.currentUser.uid).get();
+    });
+  }
 
-    for (var i = 0; i < documentSnapshot.data().length; i++) {
-      if (documentSnapshot.data()["loan$i"]["isCompleted"]) {
+  Future fillLists() async {
+    DocumentSnapshot snapshot = await futureLoans;
+
+    for (var i = 1; i <= snapshot.data().length; i++) {
+      if (snapshot.data()["loan$i"]["isCompleted"]) {
         openLoans.add(Loan(
-          name: documentSnapshot.data()["name"],
-          subject: documentSnapshot.data()["food"],
-          amount: documentSnapshot.data()["amount"],
+          name: snapshot.data()["loan$i"]["name"],
+          subject: snapshot.data()["loan$i"]["subject"],
+          amount: snapshot.data()["loan$i"]["amount"],
           isCompleted: true,
         ));
       } else {
         closedLoans.add(Loan(
-          name: documentSnapshot.data()["name"],
-          subject: documentSnapshot.data()["food"],
-          amount: documentSnapshot.data()["amount"],
+          name: snapshot.data()["loan$i"]["name"],
+          subject: snapshot.data()["loan$i"]["subject"],
+          amount: snapshot.data()["loan$i"]["amount"],
           isCompleted: false,
         ));
       }
@@ -114,44 +119,70 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               // Open loans
-              LoanList(
-                title: "Open loans",
-                heroTag: "OpenLoans",
-                loans: openLoans,
-                icon: Icons.keyboard_arrow_right,
-                action: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return OpenLoansScreen(
-                          loans: openLoans,
+              FutureBuilder(
+                future: futureLoans,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return LoanList(
+                      title: "Open loans",
+                      heroTag: "OpenLoans",
+                      loans: openLoans,
+                      icon: Icons.keyboard_arrow_right,
+                      onDissmissed: (index, loan) {
+                        setState(() {
+                          // Mark loan as closed
+                          openLoans.removeAt(index);
+                          closedLoans.add(loan);
+
+                          // Database handling?
+                        });
+
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Marked as closed"),
+                          ),
                         );
                       },
-                    ),
-                  );
+                    );
+                  } else if (snapshot.connectionState == ConnectionState.none) {
+                    return Text("No data");
+                  }
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
               SizedBox(
                 height: 29,
               ),
               // Closed loans
-              LoanList(
-                title: "Closed loans",
-                heroTag: "ClosedLoans",
-                loans: closedLoans,
-                icon: Icons.keyboard_arrow_right,
-                action: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ClosedLoansScreen(
-                          loans: closedLoans,
+              FutureBuilder(
+                future: futureLoans,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return LoanList(
+                      title: "Closed loans",
+                      heroTag: "ClosedLoans",
+                      loans: closedLoans,
+                      icon: Icons.keyboard_arrow_right,
+                      onDissmissed: (index, loan) {
+                        setState(() {
+                          // Mark loan as open
+                          closedLoans.removeAt(index);
+                          openLoans.add(loan);
+
+                          // Database handling?
+                        });
+
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Marked as open"),
+                          ),
                         );
                       },
-                    ),
-                  );
+                    );
+                  } else if (snapshot.connectionState == ConnectionState.none) {
+                    return Text("No data");
+                  }
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
             ],
